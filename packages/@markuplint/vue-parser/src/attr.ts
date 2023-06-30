@@ -18,14 +18,15 @@ export function attr(
 		/**
 		 * `v-on`
 		 */
-		const [, directive, potentialName, modifier] = attr.name.raw.match(/^(v-on:|@)([^.]+)(?:\.([^.]+))?$/i) ?? [];
+		const modifiers = attr.name.raw.split('.').slice(1);
+		const [, directive, potentialName] = attr.name.raw.match(/^(v-on:|@)([^.]+)/i) ?? [];
 		if (directive && potentialName) {
 			return {
 				...attr,
 				potentialName: `on${potentialName.toLowerCase()}`,
 				isDynamicValue: true,
 				// @ts-ignore
-				_modifier: modifier,
+				_modifier: modifiers.join('.'),
 			};
 		}
 	}
